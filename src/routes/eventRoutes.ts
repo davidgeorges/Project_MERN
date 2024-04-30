@@ -6,11 +6,11 @@ import { newEvent } from "../middleware/validator";
  * @param app
  */
 export const setEventRouting = (app) => {
-  const endpoint = "events";
+  const endpoint = "event";
 
   app.get(`/${endpoint}`, eventController.findAll);
   app.get(`/${endpoint}/:id`, eventController.findById);
-  app.post(`/${endpoint}`,newEvent,eventController.create);
+  app.post(`/${endpoint}`, newEvent, eventController.create);
   app.patch(`/${endpoint}/:id`, eventController.update);
   app.delete(`/${endpoint}/:id`, eventController.delete);
 };

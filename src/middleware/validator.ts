@@ -1,6 +1,8 @@
 import { body, validationResult } from "express-validator";
 import {Request, Response} from 'express';
 import bcrypt from "bcrypt";
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 export const newUser = [
     body("firstName")
@@ -30,8 +32,9 @@ export const newUser = [
         .withMessage("The password must be at least 8 characters long and must contain: 1 UPPERCASE letter, 1 MINIMUM letter, 1 number and 1 special character.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters.")
-        .customSanitizer(async (passwordReceive) => {
-            return await bcrypt.hash(passwordReceive, 10);
+        .customSanitizer(async (passwordReceive : String) => {
+            const customKey  = process.env.PASSWORD_KEY
+            return await bcrypt.hash(passwordReceive+customKey, 10);
         }),
     body("role")
         .notEmpty().withMessage("The role field is required")
@@ -74,8 +77,9 @@ export const editUser = [
         .withMessage("The password must be at least 8 characters long and must contain: 1 UPPERCASE letter, 1 MINIMUM letter, 1 number and 1 special character.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters.")
-        .customSanitizer(async (passwordReceive) => {
-            return await bcrypt.hash(passwordReceive, 10);
+        .customSanitizer(async (passwordReceive : String) => {
+            const customKey  = process.env.PASSWORD_KEY
+            return await bcrypt.hash(passwordReceive+customKey, 10);
         }).optional(),
     (req: Request, res: Response, next: Function) : void => {
 
