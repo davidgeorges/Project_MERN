@@ -2,6 +2,7 @@ import express from "express";
 
 import { setUserRouting } from "./routes/userRoutes";
 import { setEventRouting } from "./routes/eventRoutes";
+import { setAuthentificationRouting } from "./routes/authentificationRoutes";
 import { setMongoConnection } from "./config/mongo.config";
 
 const app = express();
@@ -12,6 +13,7 @@ setMongoConnection();
 
 setUserRouting(app);
 setEventRouting(app);
+setAuthentificationRouting(app);
 
 app.listen(port, () => {
   console.log(`serveur en écoute sur : http://localhost:${port}`);
