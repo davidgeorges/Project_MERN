@@ -35,24 +35,6 @@ class UserController {
   };
 
   /**
-   * Creation d'un user
-   * @param req
-   * @param res
-   * @param next
-   */
-  create = async (req: Request, res: Response, next: Function) => {
-    try {
-      res.status(201).json({ message: "User created successfully", payload: await new User(req.body).save() });
-    } catch (error) {
-      if (error.name === 'MongoServerError' && error.code === 11000) {
-        res.status(400).json({ message: 'Duplicate data' });
-      } else {
-        res.status(500).json({ message: 'Internal server error' });
-      }
-    }
-  };
-
-  /**
    * Mise à jour d'un user
    * @param req
    * @param res

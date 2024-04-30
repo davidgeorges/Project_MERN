@@ -10,7 +10,6 @@ export const setUserRouting = (app) => {
 
   app.get(`/${endpoint}`, userController.findAll);
   app.get(`/${endpoint}/:id`, userController.findById);
-  app.post(`/${endpoint}`, newUser, userController.create);
   app.patch(`/${endpoint}/:id`, userController.update);
   app.delete(`/${endpoint}/:id`, userController.delete);
 };
