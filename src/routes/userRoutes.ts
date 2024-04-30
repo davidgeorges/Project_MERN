@@ -1,5 +1,6 @@
 import { userController } from "../controller/userController";
-import { newUser } from "../middleware/validator";
+import { editUser } from "../middleware/validator";
+import { tokenFilter } from "../middleware/authentification";
 
 /**
  * Fonction permettant d'exporter toute nos routes users vers app.ts
@@ -8,8 +9,8 @@ import { newUser } from "../middleware/validator";
 export const setUserRouting = (app) => {
   const endpoint = "user";
 
-  app.get(`/${endpoint}`, userController.findAll);
-  app.get(`/${endpoint}/:id`, userController.findById);
-  app.patch(`/${endpoint}/:id`, userController.update);
-  app.delete(`/${endpoint}/:id`, userController.delete);
+  app.get(`/${endpoint}`, tokenFilter, userController.findAll);
+  app.get(`/${endpoint}/:id`, tokenFilter, userController.findById);
+  app.patch(`/${endpoint}/:id`, tokenFilter, editUser, userController.update);
+  app.delete(`/${endpoint}/:id`, tokenFilter, userController.delete);
 };

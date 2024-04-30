@@ -5,10 +5,12 @@ import { setUserRouting } from "./routes/userRoutes";
 import { setEventRouting } from "./routes/eventRoutes";
 import { setAuthentificationRouting } from "./routes/authentificationRoutes";
 import { setMongoConnection } from "./config/mongo.config";
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cookieParser());
 const port = 8080;
 
 setMongoConnection();
