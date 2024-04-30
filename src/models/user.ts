@@ -1,16 +1,31 @@
-import mongoose from "mongoose";
-import Joi from "joi";
+import mongoose, { Schema } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
-  nom: String,
-  prenom: String,
-  age: Number,
+const userSchema = new Schema({
+  firstName: {
+      type: String,
+  },
+  lastName: {
+      type: String,
+  },
+  email: {
+      type: String,
+      unique: true
+  },
+  password: {
+      type: String,
+  },
+  role: {
+      type: String,
+      enum: ["ADMIN","MANAGER","USER"],
+      default: "USER"
+  },
+  createdAt: {
+      type: Date,
+      default: Date.now
+  },
+
 });
 
-export const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
-export const userJoiSchema = Joi.object({
-  nom: Joi.string().required(),
-  prenom: Joi.string().required(),
-  age: Joi.number().integer().min(0),
-});
+module.exports = { User }
