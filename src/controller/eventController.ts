@@ -60,18 +60,14 @@ class EventController {
    */
   update = async (req: Request, res: Response) => {
     try {
-      const updatedUser = await Event.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      ); // {new: true} pour retourner l'objet mis à jour
-      if (!updatedUser) {
-        return res.status(404).send({ message: "Utilisateur non trouvé" });
-      }
-      res.status(200).send(updatedUser);
+      const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      res.status(updatedEvent ? 200 : 404).send({ message: updatedEvent ? "Event updated successfully" : "No event found with this id", payload: updatedEvent })
     } catch (error) {
-      console.error("Erreur de mise à jour :", error);
-      res.status(500).send({ error: "Erreur interne du serveur" });
+      if (error.name === 'MongoServerError' && error.code === 11000) {
+        res.status(400).json({ message: 'Duplicate data' });
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
+      }
     }
   };
 
@@ -84,7 +80,7 @@ class EventController {
   delete = async (req: Request, res: Response, next: Function) => {
     try {
       const deletedEvent = await Event.findByIdAndDelete(req.params.id)
-      res.status(deletedEvent ? 204 : 404).send({ message: deletedEvent ? "Event deleted successfully" : "No event to delete found with this id ",})
+      res.status(deletedEvent ? 204 : 404).send({ message: deletedEvent ? "Event deleted successfully" : "No event to delete found with this id ", })
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }

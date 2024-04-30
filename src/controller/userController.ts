@@ -42,18 +42,14 @@ class UserController {
    */
   update = async (req: Request, res: Response) => {
     try {
-      const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-      ); // {new: true} pour retourner l'objet mis à jour
-      if (!updatedUser) {
-        return res.status(404).send({ message: "Utilisateur non trouvé" });
-      }
-      res.status(200).send(updatedUser);
+      const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      res.status(updatedUser ? 200 : 404).send({ message: updatedUser ? "User updated successfully" : "No user found with this id", payload: updatedUser })
     } catch (error) {
-      console.error("Erreur de mise à jour :", error);
-      res.status(500).send({ error: "Erreur interne du serveur" });
+      if (error.name === 'MongoServerError' && error.code === 11000) {
+        res.status(400).json({ message: 'Duplicate data' });
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
+      }
     }
   };
 

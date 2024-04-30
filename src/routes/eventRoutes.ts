@@ -1,5 +1,5 @@
 import { eventController } from "../controller/eventController";
-import { newEvent } from "../middleware/validator";
+import { newEvent,editEvent } from "../middleware/validator";
 
 /**
  * Fonction permettant d'exporter toute nos routes users vers app.ts
@@ -14,6 +14,6 @@ export const setEventRouting = (app) => {
   app.get(`/${endpoint}/sortByType/:orderType`, eventController.sortByType);
   app.get(`/${endpoint}/sortByPopularity/:orderBy`, eventController.sortByPopularity);
   app.post(`/${endpoint}`, newEvent, eventController.create);
-  app.patch(`/${endpoint}/:id`, eventController.update);
+  app.patch(`/${endpoint}/:id`, editEvent, eventController.update);
   app.delete(`/${endpoint}/:id`, eventController.delete);
 };
