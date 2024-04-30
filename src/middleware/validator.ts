@@ -32,7 +32,7 @@ export const newUser = [
         .withMessage("The password must be at least 8 characters long and must contain: 1 UPPERCASE letter, 1 MINIMUM letter, 1 number and 1 special character.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters.")
-        .customSanitizer(async (passwordReceive: String) => {
+        .customSanitizer(async (passwordReceive: string) => {
             const customKey = process.env.PASSWORD_KEY
             return await bcrypt.hash(passwordReceive + customKey, 10);
         }),
@@ -77,7 +77,7 @@ export const editUser = [
         .withMessage("The password must be at least 8 characters long and must contain: 1 UPPERCASE letter, 1 MINIMUM letter, 1 number and 1 special character.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters.")
-        .customSanitizer(async (passwordReceive: String) => {
+        .customSanitizer(async (passwordReceive: string) => {
             const customKey = process.env.PASSWORD_KEY
             return await bcrypt.hash(passwordReceive + customKey, 10);
         }).optional(),
@@ -115,8 +115,9 @@ export const newEvent = [
         .withMessage("Maximum 255 characters."),
     body("date")
         .notEmpty().withMessage("The hour field is required.")
-        .isDate()
-        .withMessage("The Date field should a valid date."),
+        .customSanitizer(async (date: string) => {
+            return new Date(date);
+        }),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
@@ -152,8 +153,9 @@ export const editEvent = [
         .withMessage("Maximum 255 characters."),
     body("date")
         .notEmpty().withMessage("The hour field is required.")
-        .isDate()
-        .withMessage("The Date field should a valid date."),
+        .customSanitizer(async (date: string) => {
+            return new Date(date);
+        }),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
