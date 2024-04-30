@@ -92,25 +92,25 @@ export const editUser = [
 
 export const newEvent = [
     body("title")
-        .notEmpty().withMessage("The title field is required")
-        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
-        .withMessage("The title must contain only letters.")
+        .notEmpty().withMessage("The title field is required.")
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\d\s]+$/)
+        .withMessage("The title must contain only letters and numbers.")
         .isLength({ min: 20, max: 100 })
         .withMessage("The title must be between 20 and 100 characters.")
         .toUpperCase(),
     body("description")
-        .notEmpty().withMessage("The description field is required")
-        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
-        .withMessage("The description must contain only letters.")
+        .notEmpty().withMessage("The description field is required.")
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\d\s]+$/)
+        .withMessage("The description must contain only letters and numbers.")
         .isLength({ min: 200, max: 2400 })
-        .withMessage("The title must be between 200 and 2400 characters.")
+        .withMessage("The description must be between 200 and 2400 characters.")
         .toUpperCase(),
     body("city")
-        .notEmpty().withMessage("The city field is required")
+        .notEmpty().withMessage("The city field is required.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters."),
     body("type")
-        .notEmpty().withMessage("The type field is required")
+        .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
         .withMessage("You can type from those value ['CONFERENCE', 'CONCERT', 'PRIVATE MEETING']"),
     (req: Request, res: Response, next: Function) => {
@@ -125,25 +125,25 @@ export const newEvent = [
 
 export const editEvent = [
     body("title")
-        .notEmpty().withMessage("The title field is required")
-        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
-        .withMessage("The title must contain only letters.")
+        .notEmpty().withMessage("The title field is required.")
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\d\s]+$/)
+        .withMessage("The title must contain only letters and numbers.")
         .isLength({ min: 20, max: 100 })
         .withMessage("The title must be between 20 and 100 characters.")
         .toUpperCase(),
     body("description")
-        .notEmpty().withMessage("The description field is required")
-        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
-        .withMessage("The description must contain only letters.")
+        .notEmpty().withMessage("The description field is required.")
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\d\s]+$/)
+        .withMessage("The description must contain only letters and numbers.")
         .isLength({ min: 200, max: 2400 })
         .withMessage("The title must be between 200 and 2400 characters.")
         .toUpperCase(),
     body("city")
-        .notEmpty().withMessage("The city field is required")
+        .notEmpty().withMessage("The city field is required.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters."),
     body("type")
-        .notEmpty().withMessage("The type field is required")
+        .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
         .withMessage("You can type from those value ['CONFERENCE', 'CONCERT', 'PRIVATE MEETING']"),
     (req : Request, res: Response, next: Function) => {
