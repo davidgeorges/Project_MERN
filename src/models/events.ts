@@ -15,9 +15,6 @@ const eventSchema = new Schema({
     date: {
         type: Date
     },
-    hour: {
-        type: Number
-    },
     type: {
         type: String,
         enum: ["CONFERENCE", "CONCERT", "PRIVATE MEETING"],

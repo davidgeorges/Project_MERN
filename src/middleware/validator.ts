@@ -113,10 +113,10 @@ export const newEvent = [
         .notEmpty().withMessage("The city field is required.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters."),
-    body("hour")
+    body("date")
         .notEmpty().withMessage("The hour field is required.")
-        .isNumeric()
-        .withMessage("The hour field should be number."),
+        .isDate()
+        .withMessage("The Date field should a valid date."),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
@@ -150,10 +150,10 @@ export const editEvent = [
         .notEmpty().withMessage("The city field is required.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters."),
-    body("hour")
+    body("date")
         .notEmpty().withMessage("The hour field is required.")
-        .isNumeric()
-        .withMessage("The hour field should be number."),
+        .isDate()
+        .withMessage("The Date field should a valid date."),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
