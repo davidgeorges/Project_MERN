@@ -3,7 +3,8 @@ const ObjectId = require('mongodb').ObjectId
 
 const eventSchema = new Schema({
     title: {
-        type: String
+        type: String,
+        unique: true
     },
     description: {
         type: String

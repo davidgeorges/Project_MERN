@@ -6,49 +6,53 @@ import { Event } from "../models/events";
  */
 class EventController {
   /**
-   * Permet de récuperer la liste des utilisateurs
+   * Permet de récuperer la liste des events
    * @param req
    * @param res
    * @param next
    */
   findAll = async (req: Request, res: Response, next: Function) => {
-    res
-      .status(200)
-      .send(await Event.find())
-      .end();
-    next();
+    try {
+      res.status(200).json({ message: "Events fetched successfully", payload: await Event.find() });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
   };
 
   /**
-   * Récupération d'un users par son ID
+   * Récupération d'un event par son ID
    * @param req
    * @param res
    * @param next
    */
   findById = async (req: Request, res: Response, next: Function) => {
-    res
-      .status(200)
-      .send(await Event.findById(req.params.id))
-      .end();
-    next();
+    try {
+      res.status(200).send({ message: "Event fetched successfully", payload: await Event.findById(req.params.id) })
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' })
+    }
   };
 
   /**
-   * Creation d'un users
+   * Creation d'un event
    * @param req
    * @param res
    * @param next
    */
   create = async (req: Request, res: Response, next: Function) => {
-    res
-      .status(201)
-      .send(await Event.create(req.body))
-      .end();
-    next();
+    try {
+      res.status(201).json({ message: "Event created successfully", payload: await new Event(req.body).save() });
+    } catch (error) {
+      if (error.name === 'MongoServerError' && error.code === 11000) {
+        res.status(400).json({ message: 'Duplicate data' });
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
+      }
+    }
   };
 
   /**
-   * Mise à jour d'un users
+   * Mise à jour d'un event
    * @param req
    * @param res
    * @returns
@@ -71,17 +75,18 @@ class EventController {
   };
 
   /**
-   * Effacer un Users
+   * Effacer un event
    * @param req
    * @param res
    * @param next
    */
   delete = async (req: Request, res: Response, next: Function) => {
-    res
-      .status(200)
-      .send(await Event.findByIdAndDelete(req.params.id))
-      .end();
-    next();
+    try {
+      const deletedEvent = await Event.findByIdAndDelete(req.params.id)
+      res.status(200).json({ message: "Event deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
   };
 }
 
