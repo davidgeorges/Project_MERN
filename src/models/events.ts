@@ -1,22 +1,34 @@
 import mongoose, { Schema } from 'mongoose';
+const ObjectId = require('mongodb').ObjectId
 
 const eventSchema = new Schema({
     title: {
-      type: String,
-  },
-  description: {
-      type: String,
-  },
-  date: {
-      type: Date,
-  },
-  city: {
-      type: String,
-  },
-  createdAt: {
-      type: Date,
-      default: Date.now
-  },
+        type: String
+    },
+    description: {
+        type: String
+    },
+    city: {
+        type: String
+    },
+    date: {
+        type: Date
+    },
+    hour: {
+        type: String
+    },
+    type: {
+        type: String,
+        enum: ["CONFERENCE", "CONCERT", "PRIVATE MEETING"],
+        default: "CONFERENCE"
+    },
+    users:{
+        type: [ObjectId]
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
 
 });
 

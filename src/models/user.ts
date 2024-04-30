@@ -2,26 +2,26 @@ import mongoose, { Schema } from 'mongoose';
 
 const userSchema = new Schema({
   firstName: {
-      type: String,
+    type: String,
   },
   lastName: {
-      type: String,
+    type: String,
   },
   email: {
-      type: String,
-      unique: true
+    type: String,
+    unique: true
   },
   password: {
-      type: String,
+    type: String,
   },
   role: {
-      type: String,
-      enum: ["ADMIN","MANAGER","USER"],
-      default: "USER"
+    type: String,
+    enum: ["ADMIN", "MANAGER", "USER"],
+    default: "USER"
   },
   createdAt: {
-      type: Date,
-      default: Date.now
+    type: Date,
+    default: Date.now
   },
 
 });

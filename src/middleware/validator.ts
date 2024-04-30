@@ -1,7 +1,8 @@
-const { body, validationResult } = require("express-validator");
-const bcrypt = require("bcrypt")
+import { body, validationResult } from "express-validator";
+import {Request, Response} from 'express';
+import bcrypt from "bcrypt";
 
-const newUser = [
+export const newUser = [
     body("firstName")
         .notEmpty().withMessage("The firstName field is required")
         .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
@@ -34,10 +35,10 @@ const newUser = [
         }),
     body("role")
         .notEmpty().withMessage("The role field is required")
-        .isIn(['USER','MANAGER'])
+        .isIn(['USER', 'MANAGER'])
         .withMessage("You can only create an account for user."),
-    (req, res, next) => {
-        errors = validationResult(req);
+    (req: Request, res: Response, next: Function) => {
+        const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         } else {
@@ -46,7 +47,7 @@ const newUser = [
     },
 ];
 
-const editUser = [
+export const editUser = [
     body("firstName")
         .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
         .withMessage("The firstname must contain only letters.")
@@ -76,11 +77,11 @@ const editUser = [
         .customSanitizer(async (passwordReceive) => {
             return await bcrypt.hash(passwordReceive, 10);
         }).optional(),
-    (req, res, next) => {
+    (req: Request, res: Response, next: Function) : void => {
 
         if (Object.keys(req.body).length === 0) return res.status(400).json({ "message": "The request body is empty, no value to update." });
 
-        errors = validationResult(req);
+        const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         } else {
@@ -89,5 +90,69 @@ const editUser = [
     },
 ];
 
+export const newEvent = [
+    body("title")
+        .notEmpty().withMessage("The title field is required")
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
+        .withMessage("The title must contain only letters.")
+        .isLength({ min: 20, max: 100 })
+        .withMessage("The title must be between 20 and 100 characters.")
+        .toUpperCase(),
+    body("description")
+        .notEmpty().withMessage("The description field is required")
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
+        .withMessage("The description must contain only letters.")
+        .isLength({ min: 200, max: 2400 })
+        .withMessage("The title must be between 200 and 2400 characters.")
+        .toUpperCase(),
+    body("city")
+        .notEmpty().withMessage("The city field is required")
+        .isLength({ max: 255 })
+        .withMessage("Maximum 255 characters."),
+    body("type")
+        .notEmpty().withMessage("The type field is required")
+        .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
+        .withMessage("You can type from those value ['CONFERENCE', 'CONCERT', 'PRIVATE MEETING']"),
+    (req: Request, res: Response, next: Function) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        } else {
+            return next();
+        }
+    },
+];
 
-module.exports = { newUser, editUser }
+export const editEvent = [
+    body("title")
+        .notEmpty().withMessage("The title field is required")
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
+        .withMessage("The title must contain only letters.")
+        .isLength({ min: 20, max: 100 })
+        .withMessage("The title must be between 20 and 100 characters.")
+        .toUpperCase(),
+    body("description")
+        .notEmpty().withMessage("The description field is required")
+        .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
+        .withMessage("The description must contain only letters.")
+        .isLength({ min: 200, max: 2400 })
+        .withMessage("The title must be between 200 and 2400 characters.")
+        .toUpperCase(),
+    body("city")
+        .notEmpty().withMessage("The city field is required")
+        .isLength({ max: 255 })
+        .withMessage("Maximum 255 characters."),
+    body("type")
+        .notEmpty().withMessage("The type field is required")
+        .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
+        .withMessage("You can type from those value ['CONFERENCE', 'CONCERT', 'PRIVATE MEETING']"),
+    (req : Request, res: Response, next: Function) => {
+        const errors  = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        } else {
+            return next();
+        }
+    },
+];
+
