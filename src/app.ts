@@ -12,5 +12,5 @@ setMongoConnection();
 setUserRouting(app);
 
 app.listen(port, () => {
-  console.log(`serveur en écoute sur le port : ${port}`);
+  console.log(`serveur en écoute sur : http://localhost:${port}`);
 });

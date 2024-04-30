@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 /**
  * Fonction permettant de faire la configuration à la connection avec MongoDB
@@ -6,7 +8,7 @@ import mongoose from "mongoose";
 export const setMongoConnection = () => {
   mongoose
     .connect(
-      "mongodb://localhost:27017/user" // Assurez-vous de remplacer par le nom de votre base de données
+      process.env.DATABASE_URL
     )
     .then(() => {
       console.log("Connexion à la base de données réussie");
