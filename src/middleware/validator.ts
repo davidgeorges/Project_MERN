@@ -1,5 +1,5 @@
 import { body, validationResult } from "express-validator";
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import bcrypt from "bcrypt";
 import * as dotenv from 'dotenv'
 dotenv.config()
@@ -32,9 +32,9 @@ export const newUser = [
         .withMessage("The password must be at least 8 characters long and must contain: 1 UPPERCASE letter, 1 MINIMUM letter, 1 number and 1 special character.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters.")
-        .customSanitizer(async (passwordReceive : String) => {
-            const customKey  = process.env.PASSWORD_KEY
-            return await bcrypt.hash(passwordReceive+customKey, 10);
+        .customSanitizer(async (passwordReceive: String) => {
+            const customKey = process.env.PASSWORD_KEY
+            return await bcrypt.hash(passwordReceive + customKey, 10);
         }),
     body("role")
         .notEmpty().withMessage("The role field is required")
@@ -77,11 +77,11 @@ export const editUser = [
         .withMessage("The password must be at least 8 characters long and must contain: 1 UPPERCASE letter, 1 MINIMUM letter, 1 number and 1 special character.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters.")
-        .customSanitizer(async (passwordReceive : String) => {
-            const customKey  = process.env.PASSWORD_KEY
-            return await bcrypt.hash(passwordReceive+customKey, 10);
+        .customSanitizer(async (passwordReceive: String) => {
+            const customKey = process.env.PASSWORD_KEY
+            return await bcrypt.hash(passwordReceive + customKey, 10);
         }).optional(),
-    (req: Request, res: Response, next: Function) : void => {
+    (req: Request, res: Response, next: Function): void => {
 
         if (Object.keys(req.body).length === 0) return res.status(400).json({ "message": "The request body is empty, no value to update." });
 
@@ -113,6 +113,10 @@ export const newEvent = [
         .notEmpty().withMessage("The city field is required.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters."),
+    body("hour")
+        .notEmpty().withMessage("The hour field is required.")
+        .isNumeric()
+        .withMessage("The hour field should be number."),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
@@ -146,12 +150,16 @@ export const editEvent = [
         .notEmpty().withMessage("The city field is required.")
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters."),
+    body("hour")
+        .notEmpty().withMessage("The hour field is required.")
+        .isNumeric()
+        .withMessage("The hour field should be number."),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
         .withMessage("You can type from those value ['CONFERENCE', 'CONCERT', 'PRIVATE MEETING']"),
-    (req : Request, res: Response, next: Function) => {
-        const errors  = validationResult(req);
+    (req: Request, res: Response, next: Function) => {
+        const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         } else {
