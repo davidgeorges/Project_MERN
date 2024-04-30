@@ -27,7 +27,8 @@ class EventController {
    */
   findById = async (req: Request, res: Response, next: Function) => {
     try {
-      res.status(200).send({ message: "Event fetched successfully", payload: await Event.findById(req.params.id) })
+      const event = await Event.findById(req.params.id);
+      res.status(event ? 200 : 404).send({ message: event ? "Event fetched successfully" : "No user found with this id", payload: event })
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' })
     }
@@ -83,7 +84,7 @@ class EventController {
   delete = async (req: Request, res: Response, next: Function) => {
     try {
       const deletedEvent = await Event.findByIdAndDelete(req.params.id)
-      res.status(200).json({ message: "Event deleted successfully" });
+      res.status(deletedEvent ? 204 : 404).send({ message: deletedEvent ? "Event deleted successfully" : "No event to delete found with this id ",})
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }
