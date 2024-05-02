@@ -114,31 +114,22 @@ export const newEvent = [
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters."),
     body("date")
-        .notEmpty().withMessage("The hour field is required.")
+        .notEmpty().withMessage("The date field is required.")
         .customSanitizer(async (date: string) => {
             return new Date(date);
         }),
-    body("imageName")
-        .optional()
-        .custom((value, { req }) => {
-            if (value === null) {
-                return true;
-            }
-            const urlRegex = /^([A-Za-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))$/;
-            if (!urlRegex.test(value)) {
-                throw new Error("The url of the imageName is not valid.");
-            }
-            return true;
-        }),
     body("link")
         .optional()
+        .isArray()
         .custom((value, { req }) => {
-            if (!value && value !== null) {
-                throw new Error("The link field is required.");
+            if (value.length === 0) {
+                throw new Error("The link field must contain at least one URL.");
             }
             const urlRegex = /^(http|https):\/\/([\w-]+(\.[\w-]+)+)\/?([\w-.,@?^=%&:/~+#]*[\w-\@?^=%&/~+#])?$/;
-            if (value && !urlRegex.test(value)) {
-                throw new Error("Invalid URL format. The link must start with a valid protocol (e.g., http://, https://)");
+            for (let link of value) {
+                if (!urlRegex.test(link)) {
+                    throw new Error("Invalid URL format: " + link);
+                }
             }
             return true;
         }),
@@ -176,31 +167,22 @@ export const editEvent = [
         .isLength({ max: 255 })
         .withMessage("Maximum 255 characters."),
     body("date")
-        .notEmpty().withMessage("The hour field is required.")
+        .notEmpty().withMessage("The date field is required.")
         .customSanitizer(async (date: string) => {
             return new Date(date);
         }),
-    body("imageName")
-        .optional()
-        .custom((value, { req }) => {
-            if (value === null) {
-                return true;
-            }
-            const urlRegex = /^([A-Za-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))$/;
-            if (!urlRegex.test(value)) {
-                throw new Error("The url of the imageName is not valid.");
-            }
-            return true;
-        }),
     body("link")
         .optional()
+        .isArray()
         .custom((value, { req }) => {
-            if (!value && value !== null) {
-                throw new Error("The link field is required.");
+            if (value.length === 0) {
+                throw new Error("The link field must contain at least one URL.");
             }
             const urlRegex = /^(http|https):\/\/([\w-]+(\.[\w-]+)+)\/?([\w-.,@?^=%&:/~+#]*[\w-\@?^=%&/~+#])?$/;
-            if (value && !urlRegex.test(value)) {
-                throw new Error("Invalid URL format. The link must start with a valid protocol (e.g., http://, https://)");
+            for (let link of value) {
+                if (!urlRegex.test(link)) {
+                    throw new Error("Invalid URL format: " + link);
+                }
             }
             return true;
         }),

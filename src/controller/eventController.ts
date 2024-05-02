@@ -45,11 +45,6 @@ class EventController {
    * @param next
    */
   create = async (req: Request, res: Response, next: Function) => {
-    const imagePath: string = req?.file?.path
-    if (req?.file?.filename) { req.body.imageName = req.file.filename };
-    console.log("Pic " + req.body.imageName);
-    console.log("Fil " + req?.file?.filename);
-    console.log("Pat " + imagePath);
 
     const accessToken = req.cookies?.accessToken;
     const jwtData = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET) as JwtInterface;

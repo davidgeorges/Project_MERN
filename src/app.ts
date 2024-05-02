@@ -9,8 +9,8 @@ import { LISTEN_ADDRESS,LISTEN_PORT } from "./settings";
 
 
 const app = express();
-app.use(express.json({ limit: "10mb" }));
 app.use(cors({ origin:true, credentials:true }));
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
 setMongoConnection();
