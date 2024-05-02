@@ -19,11 +19,8 @@ const eventSchema = new Schema({
         enum: ["CONFERENCE", "CONCERT", "PRIVATE MEETING"],
         default: "CONFERENCE"
     },
-    imageName: {
-        type: String,
-    },
     link: {
-        type: String,
+        type: [String],
     },
     users:{
         type: [ObjectId]
