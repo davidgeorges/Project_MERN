@@ -13,4 +13,7 @@ export const setUserRouting = (app) => {
   app.get(`/${endpoint}/:id`, tokenFilter, userController.findById);
   app.patch(`/${endpoint}/:id`, tokenFilter, editUser, userController.update);
   app.delete(`/${endpoint}/:id`, tokenFilter, userController.delete);
+  app.post(`/${endpoint}/event/subscribe/:id`, tokenFilter, userController.subscribeToAnEvent);
+  app.delete(`/${endpoint}/event/unsubscribe/:id`, tokenFilter, userController.unsubscribeFromAnEvent);
+
 };

@@ -22,6 +22,9 @@ const eventSchema = new Schema({
     link: {
         type: [String],
     },
+    owner:{
+        type: ObjectId
+    },
     subscriber:{
         type: [ObjectId]
     },

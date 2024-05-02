@@ -53,6 +53,7 @@ class EventController {
 
     try {
       session.startTransaction();
+      req.body.owner = jwtData.userId;
       const newEvent = await new Event(req.body).save();
       const userId = jwtData.userId;
       const eventId = newEvent._id;

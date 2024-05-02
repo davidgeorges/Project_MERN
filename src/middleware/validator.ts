@@ -2,6 +2,7 @@ import { body, validationResult } from "express-validator";
 import { Request, Response } from 'express';
 import bcrypt from "bcrypt";
 import * as dotenv from 'dotenv'
+import mongoose from "mongoose";
 dotenv.config()
 
 export const newUser = [
@@ -36,6 +37,23 @@ export const newUser = [
             const customKey = process.env.PASSWORD_KEY
             return await bcrypt.hash(passwordReceive + customKey, 10);
         }),
+    body(["subscribedEvent", "eventHeld"]).custom((value) => {
+        if (!Array.isArray(value)) {
+            throw new Error('Array of ids must be an array.');
+        }
+
+        if (value.length === 0) {
+            return true;
+        }
+
+        for (const id of value) {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new Error('Each element of the array must be a valid ObjectId.');
+            }
+        }
+
+        return true;
+    }),
     body("role")
         .notEmpty().withMessage("The role field is required")
         .isIn(['USER', 'MANAGER'])
@@ -133,6 +151,23 @@ export const newEvent = [
             }
             return true;
         }),
+    body("subscriber").custom((value) => {
+        if (!Array.isArray(value)) {
+            throw new Error('Array of ids must be an array.');
+        }
+
+        if (value.length === 0) {
+            return true;
+        }
+
+        for (const id of value) {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new Error('Each element of the array must be a valid ObjectId.');
+            }
+        }
+
+        return true;
+    }),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
@@ -186,6 +221,23 @@ export const editEvent = [
             }
             return true;
         }),
+    body("subscriber").custom((value) => {
+        if (!Array.isArray(value)) {
+            throw new Error('Array of ids must be an array.');
+        }
+
+        if (value.length === 0) {
+            return true;
+        }
+
+        for (const id of value) {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new Error('Each element of the array must be a valid ObjectId.');
+            }
+        }
+
+        return true;
+    }),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
