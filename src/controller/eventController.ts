@@ -53,9 +53,9 @@ class EventController {
 
     const accessToken = req.cookies?.accessToken;
     const jwtData = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET) as JwtInterface;
-    
+
     const session = await mongoose.startSession();
-    
+
     try {
       session.startTransaction();
       const newEvent = await new Event(req.body).save();
@@ -98,10 +98,33 @@ class EventController {
    * @param next
    */
   delete = async (req: Request, res: Response, next: Function) => {
+
+    const accessToken = req.cookies?.accessToken;
+    const jwtData = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET) as JwtInterface;
+
+    const session = await mongoose.startSession();
+
     try {
+      session.startTransaction();
       const deletedEvent = await Event.findByIdAndDelete(req.params.id)
-      res.status(deletedEvent ? 204 : 404).send({ message: deletedEvent ? "Event deleted successfully" : "No event to delete found with this id ", })
+
+      if (!deletedEvent) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'No event found with this id' });
+      }
+
+      await User.findByIdAndUpdate(
+        jwtData.userId,
+        { $pull: { events: deletedEvent._id } },
+        { session }
+      );
+
+      await session.commitTransaction();
+
+      res.status(204).end();
     } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
       res.status(500).json({ message: 'Internal server error' });
     }
   };
