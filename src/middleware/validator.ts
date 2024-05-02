@@ -99,15 +99,15 @@ export const newEvent = [
         .notEmpty().withMessage("The title field is required.")
         .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\d\s]+$/)
         .withMessage("The title must contain only letters and numbers.")
-        .isLength({ min: 20, max: 100 })
-        .withMessage("The title must be between 20 and 100 characters.")
+        .isLength({ min: 5, max: 100 })
+        .withMessage("The title must be between 5 and 100 characters.")
         .toUpperCase(),
     body("description")
         .notEmpty().withMessage("The description field is required.")
         .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\d\s]+$/)
         .withMessage("The description must contain only letters and numbers.")
-        .isLength({ min: 200, max: 2400 })
-        .withMessage("The description must be between 200 and 2400 characters.")
+        .isLength({ min: 20, max: 2400 })
+        .withMessage("The description must be between 20 and 2400 characters.")
         .toUpperCase(),
     body("city")
         .notEmpty().withMessage("The city field is required.")
@@ -119,12 +119,29 @@ export const newEvent = [
             return new Date(date);
         }),
     body("imageName")
-        .matches(/^([A-Za-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif)|null)+$/)
-        .withMessage("The url of the imageName is not valid."),
+        .optional()
+        .custom((value, { req }) => {
+            if (value === null) {
+                return true;
+            }
+            const urlRegex = /^([A-Za-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))$/;
+            if (!urlRegex.test(value)) {
+                throw new Error("The url of the imageName is not valid.");
+            }
+            return true;
+        }),
     body("link")
         .optional()
-        .isURL({ require_protocol: true })
-        .withMessage("Invalid URL format. The link must start with a valid protocol (e.g., http://, https://)"),
+        .custom((value, { req }) => {
+            if (!value && value !== null) {
+                throw new Error("The link field is required.");
+            }
+            const urlRegex = /^(http|https):\/\/([\w-]+(\.[\w-]+)+)\/?([\w-.,@?^=%&:/~+#]*[\w-\@?^=%&/~+#])?$/;
+            if (value && !urlRegex.test(value)) {
+                throw new Error("Invalid URL format. The link must start with a valid protocol (e.g., http://, https://)");
+            }
+            return true;
+        }),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
@@ -144,15 +161,15 @@ export const editEvent = [
         .notEmpty().withMessage("The title field is required.")
         .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\d\s]+$/)
         .withMessage("The title must contain only letters and numbers.")
-        .isLength({ min: 20, max: 100 })
-        .withMessage("The title must be between 20 and 100 characters.")
+        .isLength({ min: 5, max: 100 })
+        .withMessage("The title must be between 5 and 100 characters.")
         .toUpperCase(),
     body("description")
         .notEmpty().withMessage("The description field is required.")
         .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\d\s]+$/)
         .withMessage("The description must contain only letters and numbers.")
-        .isLength({ min: 200, max: 2400 })
-        .withMessage("The title must be between 200 and 2400 characters.")
+        .isLength({ min: 20, max: 2400 })
+        .withMessage("The title must be between 20 and 2400 characters.")
         .toUpperCase(),
     body("city")
         .notEmpty().withMessage("The city field is required.")
@@ -164,12 +181,29 @@ export const editEvent = [
             return new Date(date);
         }),
     body("imageName")
-        .matches(/^([A-Za-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif)|null)+$/)
-        .withMessage("The url of the imageName is not valid."),
+        .optional()
+        .custom((value, { req }) => {
+            if (value === null) {
+                return true;
+            }
+            const urlRegex = /^([A-Za-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))$/;
+            if (!urlRegex.test(value)) {
+                throw new Error("The url of the imageName is not valid.");
+            }
+            return true;
+        }),
     body("link")
         .optional()
-        .isURL({ require_protocol: true })
-        .withMessage("Invalid URL format. The link must start with a valid protocol (e.g., http://, https://)"),
+        .custom((value, { req }) => {
+            if (!value && value !== null) {
+                throw new Error("The link field is required.");
+            }
+            const urlRegex = /^(http|https):\/\/([\w-]+(\.[\w-]+)+)\/?([\w-.,@?^=%&:/~+#]*[\w-\@?^=%&/~+#])?$/;
+            if (value && !urlRegex.test(value)) {
+                throw new Error("Invalid URL format. The link must start with a valid protocol (e.g., http://, https://)");
+            }
+            return true;
+        }),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])

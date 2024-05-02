@@ -1,5 +1,9 @@
 import { Request, Response, Function } from "express";
 import { Event } from "../models/events";
+import jwt from "jsonwebtoken";
+import JwtInterface from "../interfaces/jwtInterface";
+import { User } from "../models/user";
+import mongoose from "mongoose";
 
 /**
  * Logique de nos différente routes
@@ -41,9 +45,33 @@ class EventController {
    * @param next
    */
   create = async (req: Request, res: Response, next: Function) => {
+    const imagePath: string = req?.file?.path
+    if (req?.file?.filename) { req.body.imageName = req.file.filename };
+    console.log("Pic " + req.body.imageName);
+    console.log("Fil " + req?.file?.filename);
+    console.log("Pat " + imagePath);
+
+    const accessToken = req.cookies?.accessToken;
+    const jwtData = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET) as JwtInterface;
+    
+    const session = await mongoose.startSession();
+    
     try {
-      res.status(201).json({ message: "Event created successfully", payload: await new Event(req.body).save() });
+      session.startTransaction();
+      const newEvent = await new Event(req.body).save();
+      const userId = jwtData.userId;
+      const eventId = newEvent._id;
+
+      await User.findOneAndUpdate(
+        { _id: userId },
+        { $push: { events: eventId } }
+      );
+
+      await session.commitTransaction();
+      res.status(201).json({ message: 'Event created successfully', newEvent });
     } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
       res.status(500).json({ message: 'Internal server error' });
     }
   };

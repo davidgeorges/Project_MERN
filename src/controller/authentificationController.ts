@@ -2,6 +2,7 @@ import { Request, Response, Function } from "express";
 import { User } from "../models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import JwtInterface from "../interfaces/jwtInterface";
 import * as dotenv from 'dotenv'
 dotenv.config()
 
@@ -53,8 +54,9 @@ class AuthentificatonController {
                 role: user.role,
                 email: user.email
             };
-
-            const accessToken = jwt.sign({ userId: user.id, userRole: user.role }, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN });
+            
+            const userData:  JwtInterface = { userId: user.id, userRole: user.role }
+            const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN });
             res.cookie("accessToken", accessToken, { httpOnly: true });
 
             return res.status(200).json({ message: "Logged in with success.", payload });

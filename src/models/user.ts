@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+const ObjectId = require('mongodb').ObjectId
 
 const userSchema = new Schema({
   firstName: {
@@ -13,6 +14,9 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
+  },
+  events: {
+    type: [ObjectId],
   },
   role: {
     type: String,

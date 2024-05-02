@@ -7,18 +7,17 @@ import { setMongoConnection } from "./config/mongo.config";
 import cookieParser from 'cookie-parser';
 import { LISTEN_ADDRESS,LISTEN_PORT } from "./settings";
 
+
 const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(cors({ origin:true, credentials:true }));
 app.use(cookieParser());
-const port = 8080;
 
 setMongoConnection();
-
 setUserRouting(app);
 setEventRouting(app);
 setAuthentificationRouting(app);
 
-app.listen(port, () => {
+app.listen(LISTEN_PORT, () => {
   console.log(`serveur en écoute sur : http://${LISTEN_ADDRESS}:${LISTEN_PORT}`);
 });
