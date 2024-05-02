@@ -22,7 +22,7 @@ const eventSchema = new Schema({
     link: {
         type: [String],
     },
-    users:{
+    subscriber:{
         type: [ObjectId]
     },
     createdAt: {

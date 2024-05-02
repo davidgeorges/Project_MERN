@@ -59,7 +59,7 @@ class EventController {
 
       await User.findOneAndUpdate(
         { _id: userId },
-        { $push: { events: eventId } }
+        { $push: { eventHeld: eventId } }
       );
 
       await session.commitTransaction();
@@ -110,7 +110,7 @@ class EventController {
 
       await User.findByIdAndUpdate(
         jwtData.userId,
-        { $pull: { events: deletedEvent._id } },
+        { $pull: { eventHeld: deletedEvent._id } },
         { session }
       );
 
@@ -172,11 +172,11 @@ class EventController {
 
       events.sort((a, b) => {
         if (orderBy === 'asc') {
-          return a.users.length - b.users.length;
+          return a.subscriber.length - b.subscriber.length;
         } else if (orderBy === 'desc') {
-          return b.users.length - a.users.length;
+          return b.subscriber.length - a.subscriber.length;
         } else {
-          return b.users.length - a.users.length;
+          return b.subscriber.length - a.subscriber.length;
         }
       });
 

@@ -15,7 +15,10 @@ const userSchema = new Schema({
   password: {
     type: String,
   },
-  events: {
+  subscribedEvent: {
+    type: [ObjectId],
+  },
+  eventHeld: {
     type: [ObjectId],
   },
   role: {
