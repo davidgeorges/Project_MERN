@@ -4,7 +4,6 @@ const ObjectId = require('mongodb').ObjectId
 const eventSchema = new Schema({
     title: {
         type: String,
-        unique: true
     },
     description: {
         type: String
@@ -19,6 +18,12 @@ const eventSchema = new Schema({
         type: String,
         enum: ["CONFERENCE", "CONCERT", "PRIVATE MEETING"],
         default: "CONFERENCE"
+    },
+    imageName: {
+        type: String,
+    },
+    link: {
+        type: String,
     },
     users:{
         type: [ObjectId]

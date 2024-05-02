@@ -118,6 +118,13 @@ export const newEvent = [
         .customSanitizer(async (date: string) => {
             return new Date(date);
         }),
+    body("imageName")
+        .matches(/^([A-Za-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif)|null)+$/)
+        .withMessage("The url of the imageName is not valid."),
+    body("link")
+        .optional()
+        .isURL({ require_protocol: true })
+        .withMessage("Invalid URL format. The link must start with a valid protocol (e.g., http://, https://)"),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])
@@ -156,6 +163,13 @@ export const editEvent = [
         .customSanitizer(async (date: string) => {
             return new Date(date);
         }),
+    body("imageName")
+        .matches(/^([A-Za-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif)|null)+$/)
+        .withMessage("The url of the imageName is not valid."),
+    body("link")
+        .optional()
+        .isURL({ require_protocol: true })
+        .withMessage("Invalid URL format. The link must start with a valid protocol (e.g., http://, https://)"),
     body("type")
         .notEmpty().withMessage("The type field is required.")
         .isIn(["CONFERENCE", "CONCERT", "PRIVATE MEETING"])

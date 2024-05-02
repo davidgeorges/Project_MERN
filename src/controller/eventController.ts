@@ -44,11 +44,7 @@ class EventController {
     try {
       res.status(201).json({ message: "Event created successfully", payload: await new Event(req.body).save() });
     } catch (error) {
-      if (error.name === 'MongoServerError' && error.code === 11000) {
-        res.status(400).json({ message: 'Duplicate data' });
-      } else {
-        res.status(500).json({ message: 'Internal server error' });
-      }
+      res.status(500).json({ message: 'Internal server error' });
     }
   };
 
@@ -63,11 +59,7 @@ class EventController {
       const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true });
       res.status(updatedEvent ? 200 : 404).send({ message: updatedEvent ? "Event updated successfully" : "No event found with this id", payload: updatedEvent })
     } catch (error) {
-      if (error.name === 'MongoServerError' && error.code === 11000) {
-        res.status(400).json({ message: 'Duplicate data' });
-      } else {
-        res.status(500).json({ message: 'Internal server error' });
-      }
+      res.status(500).json({ message: 'Internal server error' });
     }
   };
 
