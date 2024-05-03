@@ -1,6 +1,12 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, Function } from "express";
 
+/**
+     * Token filter
+     * @param req
+     * @param res
+     * @param next
+     */
 export const tokenFilter = async (req: Request, res: Response, next: Function) => {
 
   const responseBody = { message: "" };

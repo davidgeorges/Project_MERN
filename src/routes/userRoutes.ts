@@ -7,7 +7,7 @@ import { tokenFilter } from "../middleware/authentification";
  * @param app
  */
 export const setUserRouting = (app) => {
-  const endpoint = "user";
+  const endpoint = "api/user";
 
   app.get(`/${endpoint}`, tokenFilter, userController.findAll);
   app.get(`/${endpoint}/:id`, tokenFilter, userController.findById);

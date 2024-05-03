@@ -2,6 +2,7 @@
   "compilerOptions": {
     "module": "CommonJS",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "target": "ES6",
     "moduleResolution": "Node",
     "sourceMap": true,
@@ -9,5 +10,18 @@
     "types": ["node"]
   },
   "lib": ["es2015"],
-  "include": ["src/**/*"]
+  "include": [
+    "src/swagger-output.json",
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "typeRoots": [
+    "node_modules/@types"
+  ],
+  "types": [
+    "node",
+    "express"
+  ]
 }

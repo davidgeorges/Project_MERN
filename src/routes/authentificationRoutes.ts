@@ -6,8 +6,8 @@ import { newUser } from "../middleware/validator";
  * @param app
  */
 export const setAuthentificationRouting = (app) => {
-  const endpoint = "auth";
+  const endpoint = "api/auth";
   app.post(`/${endpoint}/register`, newUser, authentificationController.register);
   app.post(`/${endpoint}/login`, authentificationController.login);
-  app.post(`/${endpoint}/logout`, authentificationController.logout);
+  app.get(`/${endpoint}/logout`, authentificationController.logout);
 };

@@ -3,11 +3,11 @@ import { newEvent,editEvent } from "../middleware/validator";
 import { tokenFilter } from "../middleware/authentification";
 
 /**
- * Fonction permettant d'exporter toute nos routes users vers app.ts
+ * Fonction permettant d'exporter toute nos routes event vers app.ts
  * @param app
  */
 export const setEventRouting = (app) => {
-  const endpoint = "event";
+  const endpoint = "api/event";
 
   app.get(`/${endpoint}`, tokenFilter, eventController.findAll);
   app.get(`/${endpoint}/:id`, tokenFilter, eventController.findById);
