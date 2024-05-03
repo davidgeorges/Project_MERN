@@ -17,7 +17,7 @@ class UserController {
    */
   findAll = async (req: Request, res: Response, next: Function) => {
     try {
-      res.status(200).json({ message: "Users fetched successfully", payload: await User.find().select('-password -role') });
+      res.status(200).json({ message: "Users fetched successfully", payload: await User.find() });
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' });
     }
@@ -31,7 +31,7 @@ class UserController {
    */
   findById = async (req: Request, res: Response, next: Function) => {
     try {
-      const event = await User.findById(req.params.id).select('-password -email -role');
+      const event = await User.findById(req.params.id);
       res.status(event ? 200 : 404).send({ message: event ? "User fetched successfully" : "No user found with this id", payload: event })
     } catch (error) {
       res.status(500).json({ message: 'Internal server error' })
@@ -46,7 +46,7 @@ class UserController {
    */
   update = async (req: Request, res: Response) => {
     try {
-      const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true }).select('-password -role');
+      const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
       res.status(updatedUser ? 200 : 404).send({ message: updatedUser ? "User updated successfully" : "No user found with this id", payload: updatedUser })
     } catch (error) {
       if (error.name === 'MongoServerError' && error.code === 11000) {
