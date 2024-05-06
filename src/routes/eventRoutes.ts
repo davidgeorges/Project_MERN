@@ -17,4 +17,6 @@ export const setEventRouting = (app) => {
   app.post(`/${endpoint}`, tokenFilter, newEvent, eventController.create);
   app.patch(`/${endpoint}/:id`, tokenFilter, editEvent, eventController.update);
   app.delete(`/${endpoint}/:id`, tokenFilter, eventController.delete);
+  app.post(`/${endpoint}/subscribe/:id`, tokenFilter, eventController.subscribeToAnEvent);
+  app.delete(`/${endpoint}/unsubscribe/:id`, tokenFilter, eventController.unsubscribeFromAnEvent);
 };
